@@ -3,176 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Quiz</title>
+    <title>MUST WATCH TV</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        * {
             margin: 0;
-            background-color: #0CC0DF; /* Background color */
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            width: 40%;
-            max-width: 800px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow */
-            padding: 20px;
-        }
-        img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            cursor: pointer;
-            border: 5px solid #0CC0DF; /* Outer blue border color */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .qa-box {
-            margin-top: 20px;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
             text-align: center;
         }
-        .question {
-            font-size: 1.4em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
         }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
         .answer {
-            font-size: 1.2em;
-            color: #555;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Text shadow */
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img id="quizImage" src="https://i.imgur.com/0VHikkE.png" alt="Quiz Image">
-        <div class="qa-box">
-            <div id="question" class="question">Click the image to get a question!</div>
-            <div id="answer" class="answer"></div>
-        </div>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="George Michael Logo">
+    <h1>MUST WATCH TV</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
     </div>
-    
-    <script>
-        const questionsAndAnswers = [
-            { question: "What is the title of the groundbreaking 1990s TV show that follows the lives of a group of friends living in New York City?", answer: "Friends" },
-            { question: "Which TV show, created by Vince Gilligan, follows the transformation of a high school chemistry teacher into a drug kingpin?", answer: "Breaking Bad" },
-            { question: "What is the name of the iconic TV series created by David Lynch that revolves around the investigation of a murder in a small town?", answer: "Twin Peaks" },
-            { question: "Which TV show, set in a dystopian future, follows the lives of a group of survivors in a world ravaged by a zombie apocalypse?", answer: "The Walking Dead" },
-            { question: "What is the title of the critically acclaimed TV series that follows the lives of the employees of a fictional paper company in Scranton, Pennsylvania?", answer: "The Office" },
-            { question: "Which TV show, created by Ryan Murphy, explores the lives of a group of high school students in a musical and dramatic context?", answer: "Glee" },
-            { question: "What is the name of the TV series that features a team of forensic experts solving crimes in a fictional city while dealing with their personal issues?", answer: "CSI: Crime Scene Investigation" },
-            { question: "Which TV show follows the lives of a group of women living in a New York City apartment complex, dealing with various romantic and personal issues?", answer: "Sex and the City" },
-            { question: "What is the title of the TV series that explores the life of a high school teacher who becomes a vigilante to protect his family?", answer: "The Punisher" },
-            { question: "Which show, created by Shonda Rhimes, focuses on the lives of a group of doctors working at a Seattle hospital?", answer: "Grey's Anatomy" },
-            { question: "What is the name of the TV series that follows the life of a quirky and socially awkward detective with extraordinary skills in solving crimes?", answer: "Monk" },
-            { question: "Which TV show, set in the 1960s, follows the lives of employees at an advertising agency in New York City?", answer: "Mad Men" },
-            { question: "What is the title of the TV series that follows the lives of a group of survivors in a world where magic and fantasy are real?", answer: "Game of Thrones" },
-            { question: "Which TV show, created by Tina Fey, is a satirical look at the lives of the cast and crew of a fictional sketch comedy show?", answer: "30 Rock" },
-            { question: "What is the name of the TV series that features a group of high school students navigating life in a small town while dealing with supernatural elements?", answer: "Buffy the Vampire Slayer" },
-            { question: "Which show follows the lives of the staff at a fictional hospital and their personal and professional struggles?", answer: "ER" },
-            { question: "What is the title of the TV series that features a group of people living on a deserted island after a plane crash?", answer: "Lost" },
-            { question: "Which TV show, created by David Simon, provides a gritty and realistic portrayal of the drug trade and law enforcement in Baltimore?", answer: "The Wire" },
-            { question: "What is the name of the TV series that follows a group of people with extraordinary abilities and their struggle to deal with their powers?", answer: "Heroes" },
-            { question: "Which show, set in a futuristic world, follows the lives of the crew on a spaceship traveling through space?", answer: "Firefly" },
-            { question: "What is the title of the TV series that explores the life of a crime-solving psychiatrist who is also a private investigator?", answer: "Psych" },
-            { question: "Which TV show, created by Dan Harmon, is known for its meta-humor and follows a group of community college students forming an unlikely friendship?", answer: "Community" },
-            { question: "What is the name of the TV series that features a group of strangers waking up to find themselves in a mysterious and dangerous game?", answer: "The Circle" },
-            { question: "Which TV show, based on a popular comic book, follows the life of a vigilante who fights crime in a dark and gritty city?", answer: "Arrow" },
-            { question: "What is the title of the TV series that explores the lives of a group of people living in a fictional, technologically advanced future society?", answer: "Black Mirror" },
-            { question: "Which TV show, set in a dystopian future, follows the life of a woman who becomes a key figure in a revolution against a totalitarian regime?", answer: "The Handmaid's Tale" },
-            { question: "What is the name of the TV series that features a group of people navigating life and relationships in a modern urban setting?", answer: "New Girl" },
-            { question: "Which TV show, created by Greg Daniels, is a mockumentary-style comedy about the daily lives of office workers at a fictional company?", answer: "The Office" },
-            { question: "What is the title of the TV series that follows the life of a group of teenagers in a fictional town while dealing with supernatural forces?", answer: "Stranger Things" },
-            { question: "Which show, created by Ryan Murphy, is an anthology series exploring different horror stories and themes each season?", answer: "American Horror Story" },
-            { question: "What is the name of the TV series that features a group of diverse individuals navigating the challenges of living in a big city?", answer: "How I Met Your Mother" },
-            { question: "Which TV show follows the life of a young woman who becomes a superhero after discovering she has superhuman abilities?", answer: "Supergirl" },
-            { question: "What is the title of the TV series that explores the lives of characters living in a fictional, isolated community with dark secrets?", answer: "The OA" },
-            { question: "Which show, set in a fictional high school, features a group of students dealing with issues of identity, relationships, and social justice?", answer: "Degrassi: The Next Generation" },
-            { question: "What is the name of the TV series that follows the lives of a group of friends who reunite after many years and navigate their changing relationships?", answer: "Friends" },
-            { question: "Which TV show features a group of characters living in a fictional town while dealing with various supernatural occurrences?", answer: "The X-Files" },
-            { question: "What is the title of the TV series that explores the lives of a group of employees at a fictional news network?", answer: "The Newsroom" },
-            { question: "Which show, set in a post-apocalyptic world, follows the struggles of a group of survivors trying to rebuild society?", answer: "The 100" },
-            { question: "What is the name of the TV series that features a diverse group of individuals in a fictional suburban neighborhood dealing with various personal and societal issues?", answer: "Desperate Housewives" },
-            { question: "Which TV show, created by Michael Schur, follows the lives of employees working in a fictional parks department?", answer: "Parks and Recreation" },
-            { question: "What is the title of the TV series that features a fictional, futuristic society where people are divided into different factions based on their characteristics?", answer: "Divergent" },
-            { question: "Which show, created by Joss Whedon, follows the lives of a team of superheroes working together to save the world from various threats?", answer: "The Avengers" },
-            { question: "What is the name of the TV series that features a group of characters working in a fictional law firm while dealing with personal and professional challenges?", answer: "Suits" },
-            { question: "Which TV show, set in a fictional high school, explores the lives and relationships of students while dealing with various dramatic and comedic situations?", answer: "Gossip Girl" },
-            { question: "What is the title of the TV series that follows the life of a young woman who discovers she has the ability to time travel and alter events?", answer: "Timeless" },
-            { question: "Which show, created by David E. Kelley, features a group of lawyers working together in a fictional law firm while dealing with various legal and personal issues?", answer: "Boston Legal" },
-            { question: "What is the name of the TV series that explores the lives of a group of teenagers in a small town while dealing with supernatural and dramatic events?", answer: "Riverdale" },
-            { question: "Which TV show, set in a fictional medieval fantasy world, follows the lives of various characters vying for power and control?", answer: "Game of Thrones" },
-            { question: "What is the title of the TV series that features a group of detectives working together to solve various complex and high-profile cases?", answer: "Law & Order" },
-            { question: "Which show, created by Tina Fey, follows the lives of employees working at a fictional comedy show and their various comedic adventures?", answer: "30 Rock" },
-            { question: "What is the name of the TV series that features a group of characters dealing with supernatural phenomena and otherworldly events in a fictional town?", answer: "Supernatural" },
-            { question: "Which TV show, set in a fictional high school, explores the lives and relationships of students while addressing various social issues?", answer: "Pretty Little Liars" },
-            { question: "What is the title of the TV series that features a diverse group of characters living in a fictional city while dealing with various comedic and dramatic situations?", answer: "Friends" },
-            { question: "Which show, created by Shonda Rhimes, follows the lives of a group of doctors working at a fictional hospital while dealing with personal and professional challenges?", answer: "Grey's Anatomy" },
-            { question: "What is the name of the TV series that features a group of individuals with extraordinary abilities who come together to save the world from various threats?", answer: "Heroes" },
-            { question: "Which TV show, set in a fictional future, follows the lives of characters living in a technologically advanced society while dealing with various challenges?", answer: "Black Mirror" },
-            { question: "What is the title of the TV series that features a fictional law firm dealing with various legal and personal issues?", answer: "Suits" },
-            { question: "Which show, created by David Simon, provides a gritty and realistic portrayal of the drug trade and law enforcement in a fictional city?", answer: "The Wire" },
-            { question: "What is the name of the TV series that follows the lives of a group of people living in a futuristic society while dealing with various challenges and conflicts?", answer: "Altered Carbon" },
-            { question: "Which TV show, set in a fictional high school, explores the lives of students dealing with various social and personal issues?", answer: "Degrassi: The Next Generation" },
-            { question: "What is the title of the TV series that features a group of detectives solving crimes in a fictional city while dealing with various personal and professional challenges?", answer: "Brooklyn Nine-Nine" },
-            { question: "Which show, created by Joss Whedon, follows the lives of a group of characters in a futuristic world where they face various dangers and challenges?", answer: "Firefly" },
-            { question: "What is the name of the TV series that features a group of characters dealing with various supernatural and otherworldly phenomena in a fictional town?", answer: "The X-Files" },
-            { question: "Which TV show, set in a fictional future, explores the lives of characters dealing with various ethical and moral dilemmas in a technologically advanced society?", answer: "Westworld" },
-            { question: "What is the title of the TV series that follows the lives of a group of characters working in a fictional office while dealing with various comedic and dramatic situations?", answer: "The Office" },
-            { question: "Which show, created by Ryan Murphy, features an anthology series exploring different themes and stories each season?", answer: "American Horror Story" },
-            { question: "What is the name of the TV series that follows the lives of a group of friends living in a fictional city while dealing with various personal and professional challenges?", answer: "How I Met Your Mother" },
-            { question: "Which TV show, set in a fictional high school, features a group of students dealing with various dramatic and comedic situations?", answer: "Glee" },
-            { question: "What is the title of the TV series that explores the lives of characters living in a fictional town with various supernatural occurrences?", answer: "Buffy the Vampire Slayer" },
-            { question: "Which show, created by Greg Daniels, follows the lives of employees working in a fictional parks department while dealing with various personal and professional issues?", answer: "Parks and Recreation" },
-            { question: "What is the name of the TV series that features a group of characters living in a fictional, technologically advanced society while dealing with various challenges?", answer: "Black Mirror" },
-            { question: "Which TV show, set in a fictional high school, explores the lives and relationships of students while addressing various social and personal issues?", answer: "Pretty Little Liars" },
-            { question: "What is the title of the TV series that features a group of characters working together to solve various complex and high-profile cases?", answer: "Law & Order" },
-            { question: "Which show, created by David E. Kelley, explores the lives of a group of lawyers working together while dealing with various legal and personal challenges?", answer: "Boston Legal" },
-            { question: "What is the name of the TV series that features a group of characters navigating life and relationships in a modern urban setting?", answer: "New Girl" },
-            { question: "Which TV show, set in a fictional, futuristic society, follows the lives of characters dealing with various ethical and moral dilemmas?", answer: "Westworld" },
-            { question: "What is the title of the TV series that follows the lives of a group of detectives solving crimes in a fictional city?", answer: "Brooklyn Nine-Nine" },
-            { question: "Which show, created by Michael Schur, follows the lives of employees working in a fictional office while dealing with various comedic and dramatic situations?", answer: "The Office" },
-            { question: "What is the name of the TV series that features a group of characters living in a fictional town while dealing with various supernatural phenomena?", answer: "The X-Files" },
-            { question: "Which TV show, set in a fictional medieval fantasy world, follows the lives of various characters vying for power and control?", answer: "Game of Thrones" },
-            { question: "What is the title of the TV series that features a group of characters dealing with various supernatural and otherworldly events?", answer: "Supernatural" },
-            { question: "Which show, created by Joss Whedon, explores the lives of a group of characters in a futuristic world where they face various dangers and challenges?", answer: "Firefly" },
-            { question: "What is the name of the TV series that follows the lives of a group of people living in a post-apocalyptic world while dealing with various survival challenges?", answer: "The 100" },
-            { question: "Which TV show, set in a fictional high school, explores the lives and relationships of students while addressing various social issues?", answer: "Degrassi: The Next Generation" },
-            { question: "What is the title of the TV series that features a group of detectives working together to solve various complex and high-profile cases?", answer: "Brooklyn Nine-Nine" },
-            { question: "Which show, created by David E. Kelley, follows the lives of a group of lawyers working together in a fictional law firm while dealing with various legal and personal challenges?", answer: "Boston Legal" },
-            { question: "What is the name of the TV series that features a group of individuals living in a fictional, technologically advanced society while dealing with various challenges?", answer: "Altered Carbon" },
-            { question: "Which TV show, set in a fictional high school, explores the lives and relationships of students while dealing with various social issues?", answer: "Pretty Little Liars" },
-            { question: "What is the title of the TV series that features a group of characters living in a fictional city while dealing with various personal and professional challenges?", answer: "Friends" },
-            { question: "Which show, created by Greg Daniels, follows the lives of employees working in a fictional parks department while dealing with various comedic and dramatic situations?", answer: "Parks and Recreation" },
-            { question: "What is the name of the TV series that features a group of characters dealing with various supernatural phenomena in a fictional town?", answer: "Supernatural" },
-            { question: "Which TV show, set in a fictional high school, explores the lives and relationships of students while addressing various social issues?", answer: "Glee" },
-            { question: "What is the title of the TV series that follows the lives of characters living in a futuristic society with various technological and moral dilemmas?", answer: "Black Mirror" },
-            { question: "Which show, created by Ryan Murphy, explores different horror stories and themes each season?", answer: "American Horror Story" },
-            { question: "What is the name of the TV series that features a group of characters working together to solve various complex and high-profile cases in a fictional city?", answer: "Law & Order" },
-            { question: "Which TV show, set in a fictional high school, explores the lives and relationships of students while dealing with various dramatic and comedic situations?", answer: "Degrassi: The Next Generation" },
-            { question: "What is the title of the TV series that features a group of detectives solving crimes in a fictional city while dealing with personal and professional challenges?", answer: "Brooklyn Nine-Nine" },
-            { question: "Which show, created by David E. Kelley, follows the lives of a group of lawyers working together in a fictional law firm while dealing with various legal and personal challenges?", answer: "Boston Legal" },
-            { question: "What is the name of the TV series that features a group of characters living in a futuristic society while dealing with various ethical and moral dilemmas?", answer: "Westworld" }
-        ];
+</div>
 
-        let currentQuestionIndex = -1;
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: "Which TV show, created by Vince Gilligan, follows the transformation of a high school chemistry teacher into a drug kingpin?", answer: "Breaking Bad" },
+        { question: "What is the name of the iconic TV series created by David Lynch that revolves around the investigation of a murder in a small town?", answer: "Twin Peaks" },
+        { question: "What is the title of the critically acclaimed TV series that follows the lives of the employees of a fictional paper company in Scranton, Pennsylvania?", answer: "The Office" },
+        { question: "Which TV show, created by Ryan Murphy, explores the lives of a group of high school students in a musical and dramatic context?", answer: "Glee" },
+        { question: "Which TV show, set in the 1960s, follows the lives of employees at an advertising agency in New York City?", answer: "Mad Men" },
+        { question: "Which show, created by Tina Fey, is a satirical look at the lives of the cast and crew of a fictional sketch comedy show?", answer: "30 Rock" },
+        { question: "Which TV show, created by David Simon, provides a gritty and realistic portrayal of the drug trade and law enforcement in Baltimore?", answer: "The Wire" },
+        { question: "Which show, set in a futuristic world, follows the lives of the crew on a spaceship traveling through space?", answer: "Firefly" },
+        { question: "Which TV show, created by Dan Harmon, is known for its meta-humor and follows a group of community college students forming an unlikely friendship?", answer: "Community" },
+        { question: "Which TV show, created by Michael Schur, follows the lives of employees working in a fictional parks department?", answer: "Parks and Recreation" },
+        { question: "Which show, created by Joss Whedon, follows the lives of a team of superheroes working together to save the world from various threats?", answer: "The Avengers" },
+        { question: "Which TV show, set in a fictional medieval fantasy world, follows the lives of various characters vying for power and control?", answer: "Game of Thrones" },
+        { question: "Which TV show, created by Ryan Murphy, is an anthology series exploring different horror stories and themes each season?", answer: "American Horror Story" },
+        { question: "Which show, set in a post-apocalyptic world, follows the struggles of a group of survivors trying to rebuild society?", answer: "The 100" },
+        { question: "Which TV show, created by Tina Fey, follows the lives of employees working at a fictional comedy show and their various comedic adventures?", answer: "30 Rock" },
+        { question: "Which TV show follows the lives of a group of women living in a New York City apartment complex, dealing with various romantic and personal issues?", answer: "Sex and the City" },
+        { question: "Which TV show, set in a dystopian future, follows the life of a woman who becomes a key figure in a revolution against a totalitarian regime?", answer: "The Handmaid's Tale" },
+        { question: "Which TV show features a group of detectives working together to solve various complex and high-profile cases?", answer: "Law & Order" },
+        { question: "Which TV show, created by Shonda Rhimes, is known for its dramatic twists and complex relationships among characters?", answer: "Scandal" }
+    ];
 
-        function getNextQuestion() {
-            currentQuestionIndex = (currentQuestionIndex + 1) % questionsAndAnswers.length;
-            const qa = questionsAndAnswers[currentQuestionIndex];
-            document.getElementById('question').textContent = qa.question;
-            document.getElementById('answer').textContent = qa.answer;
+    let currentQuestionIndex = 0;
+
+    // Shuffle the quiz data
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
+    }
 
-        document.getElementById('quizImage').addEventListener('click', getNextQuestion);
-    </script>
+    // Start the quiz
+    shuffle(quizData);
+    showQuestion();
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestionIndex].question;
+        answerContainer.innerText = "Loading answer...";
+
+        // Fade in effect
+        answerContainer.classList.remove("fadeIn");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            answerContainer.innerText = quizData[currentQuestionIndex].answer;
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Thank you for playing!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
+        }
+    }
+</script>
+
 </body>
 </html>
